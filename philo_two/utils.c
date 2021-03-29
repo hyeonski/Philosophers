@@ -6,11 +6,11 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 14:12:15 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/29 16:20:09 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/03/29 18:40:39 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int		ft_atoi(const char *str)
 {

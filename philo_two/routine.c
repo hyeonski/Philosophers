@@ -6,33 +6,33 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 14:57:41 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/29 16:18:40 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/03/29 19:20:15 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 static int	eat(t_philo *philo)
 {
 	t_table		*table;
 
 	table = philo->table;
-	pthread_mutex_lock(&table->m_forks[philo->fork1]);
+	sem_wait(table->s_forks);
 	put_msg(philo, TAKEN_FORK, get_time());
-	pthread_mutex_lock(&table->m_forks[philo->fork2]);
+	sem_wait(table->s_forks);
 	put_msg(philo, TAKEN_FORK, get_time());
 	put_msg(philo, EATING, get_time());
 	my_sleep(philo->table->time_to_eat);
-	pthread_mutex_unlock(&table->m_forks[philo->fork1]);
-	pthread_mutex_unlock(&table->m_forks[philo->fork2]);
+	sem_post(table->s_forks);
+	sem_post(table->s_forks);
 	++philo->cnt_eat;
-	pthread_mutex_lock(&philo->table->m_eat);
+	sem_wait(philo->table->s_eat);
 	if (philo->table->num_to_eat != -1 && philo->cnt_eat == philo->table->num_to_eat)
 	{
-		pthread_mutex_unlock(&philo->table->m_eat);
+		sem_post(philo->table->s_eat);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->table->m_eat);
+	sem_post(philo->table->s_eat);
 	return (0);
 }
 
@@ -60,10 +60,10 @@ int				is_someone_dead(t_philo *philo, unsigned long curr_time)
 
 int				put_msg(t_philo *philo, int status, unsigned long curr_time)
 {
-	pthread_mutex_lock(&(philo->table->m_msg));
+	sem_wait(philo->table->s_msg);
 	if ((status != DEAD && is_someone_dead(philo, curr_time)))
 	{
-		pthread_mutex_unlock(&(philo->table->m_msg));
+		sem_post(philo->table->s_msg);
 		return (1);
 	}
 	printf("%lu %d", curr_time - philo->table->base_time, philo->num);
@@ -80,7 +80,7 @@ int				put_msg(t_philo *philo, int status, unsigned long curr_time)
 		printf(" is thinking\n");
 	if (status == DEAD)
 		printf(" died\n");
-	pthread_mutex_unlock(&(philo->table->m_msg));
+	sem_post(philo->table->s_msg);
 	return (0);	
 }
 

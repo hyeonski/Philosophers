@@ -6,11 +6,11 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 17:46:13 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/29 16:18:16 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/03/29 19:31:30 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int	p_error(char *err_msg)
 {
@@ -76,21 +76,20 @@ static int	parse_arg(t_table *table, char **argv)
 	return (0);
 }
 
+static void	unlink_sems(void)
+{
+	sem_unlink("/fork");
+	sem_unlink("/eat");
+	sem_unlink("/dead");
+	sem_unlink("/msg");
+}
+
 static int	init_table(t_table *table)
 {
-	int	i;
-
-	if (!(table->m_forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * table->num_of_philos)))
-		return (1);
-	i = 0;
-	while (i < table->num_of_philos)
-	{
-		pthread_mutex_init(&table->m_forks[i], NULL);
-		i++;
-	}
-	pthread_mutex_init(&table->m_msg, NULL);
-	pthread_mutex_init(&table->m_eat, NULL);
-	pthread_mutex_init(&table->m_dead, NULL);
+	table->s_forks = sem_open("/fork",  O_CREAT | O_EXCL, 0644, table->num_of_philos);
+	table->s_eat = sem_open("/eat", O_CREAT | O_EXCL, 0644, 1);
+	table->s_dead = sem_open("/dead", O_CREAT | O_EXCL, 0644, 1);
+	table->s_msg = sem_open("/msg", O_CREAT | O_EXCL, 0644, 1);
 	table->base_time = get_time();
 	table->is_dead = FALSE;
 	return (0);
@@ -104,11 +103,6 @@ static void	init_philos(t_philo *philos, t_table *table)
 	while (i < table->num_of_philos)
 	{
 		philos[i].num = i + 1;
-		if (i == 0)
-			philos[i].fork1 = table->num_of_philos - 1;
-		else
-			philos[i].fork1 = i - 1;
-		philos[i].fork2 = i;
 		philos[i].cnt_eat = 0;
 		philos[i].table = table;
 		philos[i].last_eat = get_time();
@@ -119,18 +113,11 @@ static void	init_philos(t_philo *philos, t_table *table)
 
 void		clean_table(t_table *table, t_philo *philos)
 {
-	int				i;
-
-	i = 0;
-	while (i < table->num_of_philos)
-	{
-		pthread_mutex_destroy(&table->m_forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&table->m_msg);
-	pthread_mutex_destroy(&table->m_eat);
-	pthread_mutex_destroy(&table->m_dead);
-	free(table->m_forks);
+	unlink_sems();
+	sem_close(table->s_forks);
+	sem_close(table->s_eat);
+	sem_close(table->s_dead);
+	sem_close(table->s_msg);
 	free(philos);
 }
 
@@ -140,6 +127,7 @@ int			main(int argc, char **argv)
 	t_philo	*philos;
 	int		i;
 
+	unlink_sems();
 	if (!(5 <= argc && argc <= 6))
 		return (p_error("Error: put right number of arguments\n"));
 	if (parse_arg(&table, argv))
