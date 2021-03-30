@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_three.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/29 13:49:45 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/29 18:42:57 by hyeonski         ###   ########.fr       */
+/*   Created: 2021/03/30 19:04:16 by hyeonski          #+#    #+#             */
+/*   Updated: 2021/03/30 19:28:28 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_THREE_H
+# define PHILO_THREE_H
 
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <semaphore.h>
 
 # define TRUE		1
 # define FALSE		0
@@ -37,21 +38,19 @@ typedef struct		s_table
 	int				num_to_eat;
 	unsigned long	base_time;
 	int				is_dead;
-	pthread_mutex_t	*m_forks;
-	pthread_mutex_t	m_msg;
-	pthread_mutex_t	m_eat;
-	pthread_mutex_t	m_dead;
+	sem_t			*s_forks;
+	sem_t			*s_msg;
+	sem_t			*s_eat;
+	sem_t			*s_dead;
 }					t_table;
 
 typedef struct		s_philo
 {
 	t_table			*table;
-	int				fork1;
-	int				fork2;
 	int				num;
 	int				cnt_eat;
 	unsigned long	last_eat;
-	pthread_t		tid;
+	pid_t			pid;
 }					t_philo;
 
 int					put_msg(t_philo *philo, int msg, unsigned long current_time);

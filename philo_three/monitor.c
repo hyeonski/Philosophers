@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/29 15:55:33 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/29 19:36:41 by hyeonski         ###   ########.fr       */
+/*   Created: 2021/03/30 20:15:39 by hyeonski          #+#    #+#             */
+/*   Updated: 2021/03/30 20:16:02 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 void	*philo_monitor(void *void_philo)
 {
@@ -25,14 +25,14 @@ void	*philo_monitor(void *void_philo)
 		curr_time = get_time();
 		if (curr_time - philo->last_eat > philo->table->time_to_die)
 		{
-			pthread_mutex_lock(&philo->table->m_dead);
+			sem_wait(philo->table->s_dead);
 			if (philo->table->is_dead == FALSE)
 			{
 				philo->table->is_dead = TRUE;
-				pthread_mutex_unlock(&philo->table->m_forks[philo->fork1]);
+				sem_post(philo->table->s_forks);
 				put_msg(philo, DEAD, curr_time);
 			}
-			pthread_mutex_unlock(&philo->table->m_dead);
+			sem_post(philo->table->s_dead);
 			return (NULL);
 		}
 		my_sleep(1);
