@@ -6,7 +6,7 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 20:16:26 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/30 20:59:41 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/03/31 21:27:38 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,19 @@ int				put_msg(t_philo *philo, int status, unsigned long curr_time)
 		sem_post(philo->table->s_msg);
 		return (1);
 	}
-	printf("%lu %d", curr_time - philo->table->base_time, philo->num);
 	if (status == TAKEN_FORK)
-		printf(" has taken a fork\n");
+		printf("%lu %d has taken a fork\n", curr_time - philo->table->base_time, philo->num);
 	if (status == EATING)
 	{
-		printf(" is eating\n");
+		printf("%lu %d is eating\n", curr_time - philo->table->base_time, philo->num);
 		philo->last_eat = curr_time;
 	}
-	if (status == SLEEPING)
-		printf(" is sleeping\n");
+	if (status == SLEEPING && is_someone_dead(philo, curr_time))
+		printf("%lu %d is sleeping\n", curr_time - philo->table->base_time, philo->num);
 	if (status == THINKING)
-		printf(" is thinking\n");
+		printf("%lu %d is thinking\n", curr_time - philo->table->base_time, philo->num);
 	if (status == DEAD)
-		printf(" died\n");
+		printf("%lu %d died\n", curr_time - philo->table->base_time, philo->num);
 	sem_post(philo->table->s_msg);
 	return (0);	
 }

@@ -6,7 +6,7 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 19:03:33 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/30 20:14:29 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/03/31 20:06:43 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ static void	init_philos(t_philo *philos, t_table *table)
 	if (i != philos->table->num_of_philos)
 		eat_routine(&philos[i]);
 	else
-		philo_monitor(philos);
+		process_monitor(philos);
 }
 
 void		clean_table(t_table *table, t_philo *philos)
@@ -139,7 +139,6 @@ int			main(int argc, char **argv)
 {
 	t_table	table;
 	t_philo	*philos;
-	int		i;
 
 	unlink_sems();
 	if (!(5 <= argc && argc <= 6))

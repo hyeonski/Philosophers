@@ -6,7 +6,7 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 19:04:16 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/30 19:28:28 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/03/31 19:57:23 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <sys/time.h>
+# include <signal.h>
 # include <pthread.h>
 # include <semaphore.h>
 
@@ -56,6 +57,7 @@ typedef struct		s_philo
 int					put_msg(t_philo *philo, int msg, unsigned long current_time);
 void				*eat_routine(void *void_philo);
 void				*philo_monitor(void *void_philo);
+void				process_monitor(t_philo *philos);
 int					ft_atoi(const char *str);
 int					p_error(char *str);
 unsigned long		get_time(void);
