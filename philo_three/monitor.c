@@ -6,13 +6,13 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 20:15:39 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/31 21:23:01 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/04/01 10:14:59 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-void	*philo_monitor(void *void_philo)
+void				*philo_monitor(void *void_philo)
 {
 	t_philo			*philo;
 	unsigned long	curr_time;
@@ -41,9 +41,9 @@ void	*philo_monitor(void *void_philo)
 	return (NULL);
 }
 
-static void	kill_child(t_philo *philos)
+static void			kill_child(t_philo *philos)
 {
-	int		idx;
+	int				idx;
 
 	idx = 0;
 	while (idx < philos->table->num_of_philos)
@@ -51,15 +51,14 @@ static void	kill_child(t_philo *philos)
 		kill(philos[idx].pid, SIGKILL);
 		idx++;
 	}
-	// sem_post(philos->table->s_msg);
 }
 
-void		process_monitor(t_philo *philos)
+void				process_monitor(t_philo *philos)
 {
-	int	status;
-	int	full;
-	int	i;
-	
+	int				status;
+	int				full;
+	int				i;
+
 	full = 0;
 	while (1)
 	{
@@ -80,4 +79,12 @@ void		process_monitor(t_philo *philos)
 			break ;
 		}
 	}
+}
+
+void				unlink_sems(void)
+{
+	sem_unlink("/fork");
+	sem_unlink("/eat");
+	sem_unlink("/dead");
+	sem_unlink("/msg");
 }

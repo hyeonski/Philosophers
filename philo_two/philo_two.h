@@ -6,7 +6,7 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 13:49:45 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/29 19:33:32 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/04/01 10:22:21 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct		s_table
 {
 	int				num_of_philos;
 	unsigned long	time_to_die;
-	unsigned long	time_to_eat;	
+	unsigned long	time_to_eat;
 	unsigned long	time_to_sleep;
 	int				num_to_eat;
 	unsigned long	base_time;
@@ -53,12 +53,15 @@ typedef struct		s_philo
 	pthread_t		tid;
 }					t_philo;
 
-int					put_msg(t_philo *philo, int msg, unsigned long current_time);
+int					put_msg(t_philo *philo, int msg,
+		unsigned long current_time);
 void				*eat_routine(void *void_philo);
 void				*philo_monitor(void *void_philo);
 int					ft_atoi(const char *str);
 int					p_error(char *str);
 unsigned long		get_time(void);
+int					parse_num_arg(char *str);
 void				my_sleep(unsigned long itime);
+void				unlink_sems(void);
 
 #endif

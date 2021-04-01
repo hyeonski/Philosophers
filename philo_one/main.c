@@ -6,52 +6,11 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 17:46:13 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/29 16:18:16 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/04/01 10:07:17 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
-
-int	p_error(char *err_msg)
-{
-	printf("%s", err_msg);
-	return (1);
-}
-
-int	is_str_digit(char *str)
-{
-	int	i;
-
-	i = 0;
-	while ('0' <= str[i] && str[i] <= '9')
-		i++;
-	if (str[i] != '\0')
-		return (0);
-	return (1);
-}
-
-unsigned long	get_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
-static int	parse_num_arg(char *str)
-{
-	int		i;
-	int		ret;
-
-	i = 0;
-	if (!is_str_digit(str))
-		return (-1);
-	ret = ft_atoi(str);
-	if (ret <= 0)
-		return (-1);
-	else
-		return (ret);
-}
 
 static int	parse_arg(t_table *table, char **argv)
 {
@@ -78,9 +37,11 @@ static int	parse_arg(t_table *table, char **argv)
 
 static int	init_table(t_table *table)
 {
-	int	i;
+	int		i;
 
-	if (!(table->m_forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * table->num_of_philos)))
+	if (!(table->m_forks =
+				(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
+					* table->num_of_philos)))
 		return (1);
 	i = 0;
 	while (i < table->num_of_philos)
@@ -119,7 +80,7 @@ static void	init_philos(t_philo *philos, t_table *table)
 
 void		clean_table(t_table *table, t_philo *philos)
 {
-	int				i;
+	int		i;
 
 	i = 0;
 	while (i < table->num_of_philos)

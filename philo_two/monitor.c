@@ -6,13 +6,13 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 15:55:33 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/29 19:36:26 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/04/01 10:23:55 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
 
-void	*philo_monitor(void *void_philo)
+void				*philo_monitor(void *void_philo)
 {
 	t_philo			*philo;
 	unsigned long	curr_time;
@@ -38,4 +38,12 @@ void	*philo_monitor(void *void_philo)
 		my_sleep(1);
 	}
 	return (NULL);
+}
+
+void				unlink_sems(void)
+{
+	sem_unlink("/fork");
+	sem_unlink("/eat");
+	sem_unlink("/dead");
+	sem_unlink("/msg");
 }
