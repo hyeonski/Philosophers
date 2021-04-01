@@ -6,7 +6,7 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 14:57:41 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/03/29 16:18:40 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/04/01 09:27:15 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int				put_msg(t_philo *philo, int status, unsigned long curr_time)
 		pthread_mutex_unlock(&(philo->table->m_msg));
 		return (1);
 	}
-	printf("%lu %d", curr_time - philo->table->base_time, philo->num);
+	printf("%lums %d", curr_time - philo->table->base_time, philo->num);
 	if (status == TAKEN_FORK)
 		printf(" has taken a fork\n");
 	if (status == EATING)
