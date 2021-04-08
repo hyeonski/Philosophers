@@ -6,7 +6,7 @@
 /*   By: hyeonski <hyeonski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 20:16:26 by hyeonski          #+#    #+#             */
-/*   Updated: 2021/04/01 10:13:39 by hyeonski         ###   ########.fr       */
+/*   Updated: 2021/04/08 15:10:45 by hyeonski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void				my_sleep(unsigned long itime)
 	while (1)
 	{
 		ctime = get_time();
-		if (ctime - stime > itime)
+		if (ctime - stime >= itime)
 			return ;
 		usleep(100);
 	}
